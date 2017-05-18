@@ -53,13 +53,13 @@ def new_cert(ca_private_key_pem, csr_pem, validity_td, issuer_name, bits=2048,
     cert.set_serial_number(sn)
     cert.set_subject(name)
 
-    now_epoch = int(time.time())
+    now_epoch = long(time.time())
 
     notBefore = M2Crypto.ASN1.ASN1_UTCTIME()
     notBefore.set_time(now_epoch)
 
     notAfter = M2Crypto.ASN1.ASN1_UTCTIME()
-    notAfter.set_time(now_epoch + int(validity_td.total_seconds()))
+    notAfter.set_time(now_epoch + long(validity_td.total_seconds()))
 
     cert.set_not_before(notBefore)
     cert.set_not_after(notAfter)
@@ -180,7 +180,7 @@ def new_key(passphrase=None, bits=2048):
 
 def build_name_from_dict(**kwargs):
     name = M2Crypto.X509.X509_Name()
-    for (k, v) in list(kwargs.items()):
+    for (k, v) in kwargs.items():
         try:
             M2Crypto.X509.X509_Name.nid[k]
         except KeyError as e:
@@ -200,7 +200,7 @@ def create_csr(allow_auth=False, **name_fields):
 
     name = x.get_subject()
 
-    for k, v in list(name_fields.items()):
+    for k, v in name_fields.items():
         setattr(name, k, v)
 
     if allow_auth is True:
